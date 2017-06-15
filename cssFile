@@ -1,24 +1,37 @@
-@font-face {
-  font-family: 'Source Sans Pro';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v10/ODelI1aHBYDBqgeIAH2zlNzbP97U9sKh0jjxbPbfOKg.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Source Sans Pro';
-  font-style: normal;
-  font-weight: 600;
-  src: local('Source Sans Pro SemiBold'), local('SourceSansPro-SemiBold'), url(https://fonts.gstatic.com/s/sourcesanspro/v10/toadOcfmlt9b38dHJxOBGNNE-IuDiR70wI4zXaKqWCM.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Source Sans Pro';
-  font-style: normal;
-  font-weight: 700;
-  src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(https://fonts.gstatic.com/s/sourcesanspro/v10/toadOcfmlt9b38dHJxOBGLsbIrGiHa6JIepkyt5c0A0.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Source Sans Pro';
-  font-style: italic;
-  font-weight: 400;
-  src: local('Source Sans Pro Italic'), local('SourceSansPro-Italic'), url(https://fonts.gstatic.com/s/sourcesanspro/v10/M2Jd71oPJhLKp0zdtTvoM0DauxaEVho0aInXGvhmB4k.ttf) format('truetype');
-}
+@charset "utf-8";
+
+.newsheader .facebookicon a  { display:none; }
+
+.newsheader .latestnews { background: url(../../_images/lang/en-gb/frontpage/latestnews.png); }
+a.dl_btn:link, a.dl_btn:active, a.dl_btn:visited  {background-image:url(../../_images/blizzcast/en-GB/download_button.gif);}
+
+/* Menu navigation */
+.navigation .bar a {background: url(../../_images/lang/en-gb/nav-bar.gif);}
+
+/* Community Contest index page */
+	.featured_list .ft_list_title {line-height:1;}
+	.featured_list .ft_list_int q {padding-top:35px;}
+	
+	
+/* Landing Page */	
+
+		
+	/* Fan Art rules */
+	
+	.btn-agree {background-image: url(../../_images/lang/en-gb/btn-agree.jpg);}
+	.btn-disagree {background-image: url(../../_images/lang/en-gb/btn-disagree.jpg);}
+	
+	
+/* SC2 Purchase Buttons */
+.sc2 #purchase-buttons-all {display: block;}
+
+.music_page .button-blue-large span em {font-size:14px;}
+
+/* Mists of Pandaria */
+.mists .logo-rating { background: url("../../_images/lang/en-gb/games/rating_cataclysm.gif") no-repeat scroll center top transparent; height: 44px; left: 700px; top: 75px; width: 167px; }
+
+/* Mists of Padaria Launch page */
+.mop-launch .button-other-retailers { background-image: url(../../_images/company/events/mists-of-pandaria-launch/button-other-retailers-en-gb.png) }
+
+/* HotS launch event */
+.subheader .hots-launch { background: url("../../../_images/company/events/heart-of-the-swarm-launch/header-en-gb.jpg") no-repeat center top #0c0116; height: 460px; min-width: 1024px; }

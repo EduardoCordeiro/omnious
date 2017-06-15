@@ -1,10 +1,8 @@
-from html.parser import HTMLParser
 from urllib.request import urlopen
+from html.parser import HTMLParser
 from urllib import parse
-
-import sys
-
 import datetime
+import sys
 
 class LinkParser(HTMLParser):
 
@@ -32,6 +30,8 @@ class LinkParser(HTMLParser):
 
         response = urlopen(url)
 
+        htmlString = ""
+
         # Check all the responses.
         # Let's actually log all of them and see what is interesting after
         contentType = response.getheader('Content-Type')
@@ -44,11 +44,7 @@ class LinkParser(HTMLParser):
             htmlString = htmlBytes.decode("utf-8")
 
             # Printing to a file all the information for now
-            fileWriter('text/html', htmlString)
-
-            self.feed(htmlString)
-
-            return htmlString, self.links
+            #fileWriter('text/html', htmlString)
 
         elif contentType.find('text/plain') > -1:
 
@@ -56,11 +52,7 @@ class LinkParser(HTMLParser):
             htmlString = htmlBytes.decode("utf-8")
 
             # Printing to a file all the information for now
-            fileWriter('text/plain', htmlString)
-
-            self.feed(htmlString)
-
-            return htmlString, self.links
+            #fileWriter('text/plain', htmlString)
 
         elif contentType.find('text/css') > -1:
 
@@ -68,28 +60,30 @@ class LinkParser(HTMLParser):
             htmlString = htmlBytes.decode("utf-8")
 
             # Printing to a file all the information for now
-            fileWriter('text/css', htmlString)
-
-            self.feed(htmlString)
-
-            return htmlString, self.links
+            #fileWriter('text/css', htmlString)
 
         else:
-            return "",[]
+            return htmlString,[]
+
+        self.feed(htmlString)
+
+        sys.stdout.flush()
+
+        return htmlString, self.links
 
 def fileWriter(contentType, data):
 
     if contentType == 'text/html':
 
-        fileObject = open('htmlFile', "w+")
+        fileObject = open('htmlFile', "r+")
 
     elif contentType == 'text/plain':
 
-        fileObject = open('plainFile', "w+")
+        fileObject = open('plainFile', "r+")
 
     elif contentType == 'text/css':
 
-        fileObject = open('cssFile', "w+")
+        fileObject = open('cssFile', "r+")
 
     else:
         print("Did not find a suitable Content Type to store")
@@ -141,7 +135,7 @@ def spider(url, word, maxPages):
 
         try:
 
-            print(pagesVisited, "Visiting:", url)
+            print(pagesVisited, url)
 
             websiteLog(url)
 
@@ -152,11 +146,7 @@ def spider(url, word, maxPages):
             # index of the word we are looking for
             index = data.find(word)
 
-            dataSplit = data.split("\n")
-
-        #    for a in dataSplit:
-            #    if a.find(word) > -1:
-                #    print("element",a)
+            #dataSplit = data.split("\n")
 
             if word in data:
 
@@ -168,14 +158,16 @@ def spider(url, word, maxPages):
                 # of pages to visit:
 
             pagesToVisit = pagesToVisit + links
-            print("Page Visited Succesfully.")
+
+            # update the progress on every site
+            sys.stdout.flush()
 
         except:
             # deal with errors here, i want to know what this is
             print("Failed with error ....")
 
     if  foundWord:
-        print("The word: ", word, " was found @", url, ".")
+        print("The word:", word, " was found @", url)
     else:
         print("The word:", word, "was not found.")
 
