@@ -9,7 +9,7 @@ class LinkParser(HTMLParser):
     # looking for links
     def handle_starttag(self, tag, attrs):
 
-        if tag == 'a':
+        if tag == 'a' or tag == 'link':
 
             for(key, value) in attrs:
 
@@ -30,10 +30,17 @@ class LinkParser(HTMLParser):
 
         response = urlopen(url)
 
-        if response.getheader('Content-Type') == 'text/html':
+        # Check all the responses.
+        # Let's actually log all of them and see what is interesting after
+        print("Response from link is =", response.getheader('Content-Type'), '\n')
+
+        if response.getheader('Content-Type').find('text/html') > -1:
 
             htmlBytes = response.read()
             htmlString = htmlBytes.decode("utf-8")
+
+            # Printing to a file all the information for now
+            fileWriter('text/html', htmlString)
 
             self.feed(htmlString)
 
@@ -42,6 +49,37 @@ class LinkParser(HTMLParser):
         else:
 
             return "",[]
+
+def fileWriter(contentType, data):
+
+    print("Printing to file!\n")
+
+    if contentType == 'text/html':
+
+        fileObject = open('htmlFile', "w+")
+
+        fileObject.write(data)
+
+        fileObject.close()
+
+    elif contentType == 'text/plain':
+
+        fileObject = open('plainFile', "w+")
+
+        fileObject.write(data)
+
+        fileObject.close()
+
+    elif contentType == 'text/css':
+
+        fileObject = open('cssFile', "w+")
+
+        fileObject.write(data)
+
+        fileObject.close()
+
+    else:
+        print("Did not find a suitable Content Type to store")
 
 def spider(url, word, maxPages):
 
@@ -54,8 +92,6 @@ def spider(url, word, maxPages):
     # Main Loop
     # Create a LinkParser and get all the links
     # Search for the word in that page
-    #
-
     while pagesVisited < maxPages and pagesToVisit != [] and not foundWord:
 
         pagesVisited = pagesVisited + 1
@@ -95,13 +131,15 @@ def main():
 
     # Parse args
     # Usage: URL  WORD  MAXPAGES
-    startingUrl = str(sys.argv[1])
+    startingUrl = "http://" + str(sys.argv[1])
 
     startingWord = str(sys.argv[2])
 
-    maxPageCount = str(sys.argv[3])
+    maxPageCount = int(sys.argv[3])
 
-    print(startingUrl, startingWord, maxPageCount)
+    print("Searching", startingUrl, "for word", startingWord, "with level", maxPageCount, "\n")
+
+    spider(startingUrl, startingWord, maxPageCount)
 
 
 if __name__ == '__main__':
