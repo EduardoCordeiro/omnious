@@ -32,9 +32,11 @@ class LinkParser(HTMLParser):
 
         # Check all the responses.
         # Let's actually log all of them and see what is interesting after
+        contentType = response.getheader('Content-Type')
+
         print("Response from link is =", response.getheader('Content-Type'), '\n')
 
-        if response.getheader('Content-Type').find('text/html') > -1:
+        if contentType.find('text/html') > -1:
 
             htmlBytes = response.read()
             htmlString = htmlBytes.decode("utf-8")
@@ -46,8 +48,31 @@ class LinkParser(HTMLParser):
 
             return htmlString, self.links
 
-        else:
+        elif contentType.find('text/plain') > -1:
 
+            htmlBytes = response.read()
+            htmlString = htmlBytes.decode("utf-8")
+
+            # Printing to a file all the information for now
+            fileWriter('text/plain', htmlString)
+
+            self.feed(htmlString)
+
+            return htmlString, self.links
+
+        elif contentType.find('text/css') > -1:
+
+            htmlBytes = response.read()
+            htmlString = htmlBytes.decode("utf-8")
+
+            # Printing to a file all the information for now
+            fileWriter('text/css', htmlString)
+
+            self.feed(htmlString)
+
+            return htmlString, self.links
+
+        else:
             return "",[]
 
 def fileWriter(contentType, data):
@@ -58,28 +83,20 @@ def fileWriter(contentType, data):
 
         fileObject = open('htmlFile', "w+")
 
-        fileObject.write(data)
-
-        fileObject.close()
-
     elif contentType == 'text/plain':
 
         fileObject = open('plainFile', "w+")
-
-        fileObject.write(data)
-
-        fileObject.close()
 
     elif contentType == 'text/css':
 
         fileObject = open('cssFile', "w+")
 
-        fileObject.write(data)
-
-        fileObject.close()
-
     else:
         print("Did not find a suitable Content Type to store")
+
+    fileObject.write(data)
+
+    fileObject.close()
 
 def spider(url, word, maxPages):
 
