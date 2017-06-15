@@ -2,6 +2,8 @@ from html.parser import HTMLParser
 from urllib.request import urlopen
 from urllib import parse
 
+import sys
+
 class LinkParser(HTMLParser):
 
     # looking for links
@@ -88,3 +90,19 @@ def spider(url, word, maxPages):
         print("The word: ", word, " was found @ ", url, ".")
     else:
         print("The word: ", word, " was not found.")
+
+def main():
+
+    # Parse args
+    # Usage: URL  WORD  MAXPAGES
+    startingUrl = str(sys.argv[1])
+
+    startingWord = str(sys.argv[2])
+
+    maxPageCount = str(sys.argv[3])
+
+    print(startingUrl, startingWord, maxPageCount)
+
+
+if __name__ == '__main__':
+    main()
