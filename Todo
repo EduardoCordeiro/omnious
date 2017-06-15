@@ -1,8 +1,9 @@
 Functionality I plan to add so far:
 
 report on where in page it was found:
-add more than html/text ??? does this make sense ?
-make it usable in the bash/normal command line
-remove the http from the links, make it figure it out
+add more than html/text ??? does this make sense ? In progress
+make it usable in the bash/normal command line Done
+remove the http from the links, make it figure it out Done
 multiple words ?
 important: is it only looking for links in the main page, or on the subsequent aswell?
+make it not case sensitive

@@ -4,6 +4,8 @@ from urllib import parse
 
 import sys
 
+import datetime
+
 class LinkParser(HTMLParser):
 
     # looking for links
@@ -77,8 +79,6 @@ class LinkParser(HTMLParser):
 
 def fileWriter(contentType, data):
 
-    print("Printing to file!\n")
-
     if contentType == 'text/html':
 
         fileObject = open('htmlFile', "w+")
@@ -97,6 +97,28 @@ def fileWriter(contentType, data):
     fileObject.write(data)
 
     fileObject.close()
+
+def websiteLog(url):
+
+    # Check the date
+    # Purely cosmetical, looks nice in the file
+    dateCheck = open("websiteLog", "r")
+
+    lines = dateCheck.readlines()
+
+    dateCheck.close()
+
+    siteFile = open('websiteLog', "a+")
+
+    # Trailing \n in the files really makes this line ugly
+    if str(datetime.date.today()) + "\n" not in lines:
+        siteFile.write(str(datetime.date.today()))
+        siteFile.write("\n")
+
+    siteFile.write(url)
+    siteFile.write("\n")
+
+    siteFile.close()
 
 def spider(url, word, maxPages):
 
@@ -121,13 +143,26 @@ def spider(url, word, maxPages):
 
             print(pagesVisited, "Visiting:", url)
 
+            websiteLog(url)
+
             parser = LinkParser()
 
             data, links = parser.getLinks(url)
 
-            if data.find(word) > -1:
+            # index of the word we are looking for
+            index = data.find(word)
+
+            dataSplit = data.split("\n")
+
+        #    for a in dataSplit:
+            #    if a.find(word) > -1:
+                #    print("element",a)
+
+            if word in data:
 
                 foundWord = True
+
+                #print("Data", index)
 
                 # Add the pages that we visited to the end of our collection
                 # of pages to visit:
@@ -140,9 +175,9 @@ def spider(url, word, maxPages):
             print("Failed with error ....")
 
     if  foundWord:
-        print("The word: ", word, " was found @ ", url, ".")
+        print("The word: ", word, " was found @", url, ".")
     else:
-        print("The word: ", word, " was not found.")
+        print("The word:", word, "was not found.")
 
 def main():
 
