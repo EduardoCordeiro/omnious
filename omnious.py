@@ -1,6 +1,7 @@
 from urllib.request import urlopen
 from html.parser import HTMLParser
 from urllib import parse
+
 import datetime
 import sys
 
@@ -36,7 +37,7 @@ class LinkParser(HTMLParser):
         # Let's actually log all of them and see what is interesting after
         contentType = response.getheader('Content-Type')
 
-        print("Response from link is =", response.getheader('Content-Type'), '\n')
+        #print("Response from link is =", contentType, '\n')
 
         if contentType.find('text/html') > -1:
 
@@ -65,10 +66,10 @@ class LinkParser(HTMLParser):
         else:
             return htmlString,[]
 
+        #sys.stdout.flush()
+        #print("feed")
         self.feed(htmlString)
-
-        sys.stdout.flush()
-
+        #print("feeded")
         return htmlString, self.links
 
 def fileWriter(contentType, data):
@@ -149,13 +150,10 @@ def spider(url, word, maxPages):
             #dataSplit = data.split("\n")
 
             if word in data:
-
                 foundWord = True
 
-                #print("Data", index)
-
-                # Add the pages that we visited to the end of our collection
-                # of pages to visit:
+            # Add the pages that we visited to the end of our collection
+            # of pages to visit:
 
             pagesToVisit = pagesToVisit + links
 
