@@ -5,6 +5,7 @@ from urllib import parse
 import datetime
 import sys
 
+
 class LinkParser(HTMLParser):
 
     # looking for links
@@ -37,7 +38,7 @@ class LinkParser(HTMLParser):
         # Let's actually log all of them and see what is interesting after
         contentType = response.getheader('Content-Type')
 
-        #print("Response from link is =", contentType, '\n')
+        # print("Response from link is =", contentType, '\n')
 
         if contentType.find('text/html') > -1:
 
@@ -45,7 +46,7 @@ class LinkParser(HTMLParser):
             htmlString = htmlBytes.decode("utf-8")
 
             # Printing to a file all the information for now
-            #fileWriter('text/html', htmlString)
+            # fileWriter('text/html', htmlString)
 
         elif contentType.find('text/plain') > -1:
 
@@ -53,7 +54,7 @@ class LinkParser(HTMLParser):
             htmlString = htmlBytes.decode("utf-8")
 
             # Printing to a file all the information for now
-            #fileWriter('text/plain', htmlString)
+            # fileWriter('text/plain', htmlString)
 
         elif contentType.find('text/css') > -1:
 
@@ -61,16 +62,17 @@ class LinkParser(HTMLParser):
             htmlString = htmlBytes.decode("utf-8")
 
             # Printing to a file all the information for now
-            #fileWriter('text/css', htmlString)
+            # fileWriter('text/css', htmlString)
 
         else:
             return htmlString,[]
 
-        #sys.stdout.flush()
-        #print("feed")
+        # sys.stdout.flush()
+        # print("feed")
         self.feed(htmlString)
-        #print("feeded")
+        # print("feeded")
         return htmlString, self.links
+
 
 def fileWriter(contentType, data):
 
@@ -93,6 +95,7 @@ def fileWriter(contentType, data):
 
     fileObject.close()
 
+
 def websiteLog(url):
 
     # Check the date
@@ -114,6 +117,7 @@ def websiteLog(url):
     siteFile.write("\n")
 
     siteFile.close()
+
 
 def spider(url, word, maxPages):
 
@@ -147,7 +151,7 @@ def spider(url, word, maxPages):
             # index of the word we are looking for
             index = data.find(word)
 
-            #dataSplit = data.split("\n")
+            # dataSplit = data.split("\n")
 
             if word in data:
                 foundWord = True
@@ -164,10 +168,11 @@ def spider(url, word, maxPages):
             # deal with errors here, i want to know what this is
             print("Failed with error ....")
 
-    if  foundWord:
+    if foundWord:
         print("The word:", word, " was found @", url)
     else:
         print("The word:", word, "was not found.")
+
 
 def main():
 
