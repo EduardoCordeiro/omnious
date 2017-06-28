@@ -1,6 +1,7 @@
 from urllib.request import urlopen
 from html.parser import HTMLParser
 from urllib import parse
+import urllib.request
 
 import datetime
 import sys
@@ -67,7 +68,7 @@ class LinkParser(HTMLParser):
         else:
             return htmlString,[]
 
-        # sys.stdout.flush()
+        #sys.stdout.flush()
         # print("feed")
         self.feed(htmlString)
         # print("feeded")
@@ -164,9 +165,9 @@ def spider(url, word, maxPages):
             # update the progress on every site
             sys.stdout.flush()
 
-        except:
+        except urllib.error.HTTPError as error:
             # deal with errors here, i want to know what this is
-            print("Failed with error ....")
+            print("Failed with error ....", error.code)
 
     if foundWord:
         print("The word:", word, " was found @", url)
